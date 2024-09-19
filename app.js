@@ -6,7 +6,8 @@ import { fileURLToPath } from "url";
 import path from "path";
 import passport from "./config/passport.js"; // Import Passport configuration
 import prisma from "./config/prismaClient.js"; // shared Prisma Client
-import { navRouter } from "./routes/nav.js";
+import { authRouter } from "./routes/authRoutes.js";
+import { navRouter } from "./routes/navRoutes.js";
 import { catch404, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -48,6 +49,7 @@ app.use(
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(authRouter);
 app.use(navRouter);
 
 // ERROR HANDLER
