@@ -7,6 +7,30 @@ const catch404 = (req, res, next) => {
   });
 };
 
+// Will catch errors from Multer and send them to the view and render where
+// partials/errors.ejs is included
+const fileUploadErrorHandler = (err, req, res, next) => {
+  if (err.code === "LIMIT_FILE_SIZE") {
+    return res.render("fileupload", {
+      title: "Error",
+      errors: [{ msg: "File size exceeds limit" }],
+    });
+  }
+
+  if (err.message === "Only images are allowed") {
+    return res.render("fileupload", {
+      title: "Error",
+      errors: [{ msg: err.message }],
+    });
+  }
+
+  // For any other errors
+  return res.render("fileupload", {
+    title: "Error",
+    errors: [{ msg: "An unexpected error occured" }],
+  });
+};
+
 // Error handling middleware
 const errorHandler = (err, req, res, next) => {
   console.error(err.stack); // Error for other errors
@@ -22,4 +46,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-export { catch404, errorHandler };
+export { catch404, fileUploadErrorHandler, errorHandler };

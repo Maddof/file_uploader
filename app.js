@@ -1,18 +1,19 @@
 import express from "express";
-import session from "express-session";
 import expressEjsLayouts from "express-ejs-layouts";
-import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+import sessionConfig from "./config/sessionConfig.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import passport from "./config/passport.js"; // Import Passport configuration
-import prisma from "./config/prismaClient.js"; // shared Prisma Client
 import { authRouter } from "./routes/authRoutes.js";
 import { navRouter } from "./routes/navRoutes.js";
-import { catch404, errorHandler } from "./middleware/errorHandler.js";
+import {
+  catch404,
+  fileUploadErrorHandler,
+  errorHandler,
+} from "./middleware/errorHandler.js";
 import fileRouter from "./routes/multerRoutes.js";
 
 const app = express();
-
 const PORT = process.env.PORT || 5000;
 
 // Get directory & file names using ES module compatible methods
@@ -20,12 +21,12 @@ const __filename = fileURLToPath(import.meta.url); // Correct way to get __filen
 const __dirname = path.dirname(__filename); // Correct way to get __dirname
 
 // EJS VIEW TEMPLATE SETUP
-// Setup static folder
+// Setup static folder, serve static files
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
 // Setting Up EJS as the View Engine
-app.use(expressEjsLayouts);
+app.use(expressEjsLayouts); // EJS layouts middleware
 app.set("layout");
 app.set("view engine", "ejs");
 // Setting the Views Directory
@@ -34,30 +35,19 @@ app.set("views", path.join(__dirname, "views"));
 // END EJS VIEW TEMPLATE SETUP
 
 // Set up session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET, // Replace with a secure key in production
-    resave: false,
-    saveUninitialized: false,
-    store: new PrismaSessionStore(prisma, {
-      checkPeriod: 2 * 60 * 1000, // Check for expired sessions every 2 minutes
-      dbRecordIdIsSessionId: true, // Optional: use Prisma Session ID as the Session ID
-    }),
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
-  })
-);
+app.use(sessionConfig);
 
 app.use(passport.session());
+// BODY PARSER MIDDLEWARE
 app.use(express.urlencoded({ extended: true }));
 
-app.use(fileRouter);
+// USE ROUTES
 app.use(authRouter);
 app.use(navRouter);
+app.use(fileRouter);
 
-// ERROR HANDLER
-// Catch 404 and forward to the error handler
+// ERROR HANDLING
+app.use(fileUploadErrorHandler);
 app.use(catch404);
 app.use(errorHandler);
 
