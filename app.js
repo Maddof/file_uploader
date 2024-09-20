@@ -9,8 +9,11 @@ import prisma from "./config/prismaClient.js"; // shared Prisma Client
 import { authRouter } from "./routes/authRoutes.js";
 import { navRouter } from "./routes/navRoutes.js";
 import { catch404, errorHandler } from "./middleware/errorHandler.js";
+import fileRouter from "./routes/multerRoutes.js";
 
 const app = express();
+
+const PORT = process.env.PORT || 5000;
 
 // Get directory & file names using ES module compatible methods
 const __filename = fileURLToPath(import.meta.url); // Correct way to get __filename
@@ -47,8 +50,9 @@ app.use(
 );
 
 app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
+app.use(fileRouter);
 app.use(authRouter);
 app.use(navRouter);
 
@@ -57,6 +61,6 @@ app.use(navRouter);
 app.use(catch404);
 app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

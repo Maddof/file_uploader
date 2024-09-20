@@ -49,6 +49,19 @@ const nav = {
       return next(err);
     }
   },
+
+  // @desc Render file upload
+  // @route GET /fileupload
+  renderFileUpload(req, res, next) {
+    try {
+      res.render("fileupload", {
+        title: "File uploader",
+        errors: null,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  },
 };
 
 export { nav };
