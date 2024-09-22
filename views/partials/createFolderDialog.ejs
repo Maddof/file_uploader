@@ -1,0 +1,11 @@
+<dialog id="createFolderDialog" class="dialogPopup">
+  <h2>Create folder</h2>
+  <form action="createfolder" method="post">
+    <label for="foldername">Name:</label>
+    <input type="text" name="foldername" id="foldername" required />
+    <button type="submit">Add folder</button>
+  </form>
+  <button autofocus id="closeCreateFolderBtn">Close</button>
+  <p>My modal!</p>
+  <%- include("errors.ejs") %>
+</dialog>

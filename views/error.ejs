@@ -1,2 +1,8 @@
-<h1>Error <%= status %></h1>
 <p><%= message %></p>
+
+<!-- Display status code if available -->
+<% if (status) { %>
+<p>Status: <%= status %></p>
+<% } %> <%- include("partials/errors") %>
+
+<a href="/">Back to Home</a>

@@ -12,6 +12,7 @@ import {
   errorHandler,
 } from "./middleware/errorHandler.js";
 import fileRouter from "./routes/multerRoutes.js";
+import { folderRouter } from "./routes/folderRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -41,14 +42,20 @@ app.use(passport.session());
 // BODY PARSER MIDDLEWARE
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  res.locals.errors = null;
+  next();
+});
+
 // USE ROUTES
 app.use(authRouter);
 app.use(navRouter);
 app.use(fileRouter);
+app.use(folderRouter);
 
 // ERROR HANDLING
-app.use(fileUploadErrorHandler);
 app.use(catch404);
+app.use(fileUploadErrorHandler);
 app.use(errorHandler);
 
 app.listen(PORT, () => {

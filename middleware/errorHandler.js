@@ -23,12 +23,12 @@ const fileUploadErrorHandler = (err, req, res, next) => {
       errors: [{ msg: err.message }],
     });
   }
-
+  next(err);
   // For any other errors
-  return res.render("fileupload", {
-    title: "Error",
-    errors: [{ msg: "An unexpected error occured" }],
-  });
+  // return res.render("fileupload", {
+  //   title: "Error",
+  //   errors: [{ msg: "An unexpected error occured" }],
+  // });
 };
 
 // Error handling middleware

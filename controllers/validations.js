@@ -39,4 +39,11 @@ const validateSecret = [
     .escape(),
 ];
 
-export { validateUserSignUp, validateSecret };
+const validateFolderName = [
+  body("foldername")
+    .notEmpty()
+    .withMessage("Please enter a name for folder")
+    .escape(),
+];
+
+export { validateUserSignUp, validateSecret, validateFolderName };
