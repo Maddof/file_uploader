@@ -9,12 +9,12 @@
     <h2><%= folder.name %></h2>
     <p>Number of files: 2</p>
     <button value="<%= folder.id %>" class="del-folder-btn">DELETE</button>
-    <button>EDIT</button>
+    <button value="<%= folder.id %>" class="edit-folder-btn">EDIT</button>
   </li>
 
   <% }) %>
 </ul>
-<% } else { %>
+<%- include('partials/editFolderDialog'); -%> <% } else { %>
 <p>Please login or create an account to publish folders and upload files.</p>
 <% } %>
 
@@ -47,6 +47,32 @@
             alert("Something went wrong");
           }
         }
+      });
+    });
+
+    const editFolderDialog = document.querySelector("#editFolderDialog");
+    const editButtons = document.querySelectorAll(".edit-folder-btn");
+    const folderNameInput = document.querySelector("#foldername"); // Selector for input in dialog
+
+    const closeEditFolderDialogBtn = document.querySelector(
+      "#closeEditFolderBtn"
+    );
+
+    closeEditFolderDialogBtn.addEventListener("click", () => {
+      editFolderDialog.close();
+    });
+
+    editButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const folderId = button.value;
+        const folderElement = document.querySelector(`#folder-${folderId}`);
+        const folderName = folderElement.querySelector("h2").textContent;
+
+        // Set the folder name in the modal's input field
+        folderNameInput.value = folderName;
+
+        editFolderDialog.showModal();
       });
     });
   });

@@ -1,0 +1,14 @@
+<dialog id="editFolderDialog" class="dialogPopup">
+  <h2>Edit folder</h2>
+
+  <% if (currentUser) { %>
+  <form action="editfolder" method="post">
+    <label for="foldername">Name:</label>
+    <input type="text" name="foldername" id="foldername" required />
+    <button type="submit">Rename</button>
+  </form>
+  <button autofocus id="closeEditFolderBtn">Close</button>
+  <% } else { %>
+  <p>Please login to edit folders</p>
+  <% } %> <%- include("errors.ejs") %>
+</dialog>
