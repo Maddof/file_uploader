@@ -1,11 +1,22 @@
+import { getAllFoldersByUserId } from "../db/folderQueries.js";
+
+// const allFoldersByUserId = await nav.getAllFoldersByUserId(req.user.id);
+
 const nav = {
   // @desc Render homepage (index) page
   // @route GET /
-  renderIndex(req, res, next) {
+  async renderIndex(req, res, next) {
     try {
+      let allFoldersByUserId = [];
+
+      if (req.user) {
+        allFoldersByUserId = await getAllFoldersByUserId(req.user.id);
+      }
+      console.log(allFoldersByUserId);
       res.render("index", {
         title: "Home",
         errors: null,
+        folders: allFoldersByUserId,
       });
     } catch (err) {
       return next(err);

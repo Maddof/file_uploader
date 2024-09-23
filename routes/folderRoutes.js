@@ -1,8 +1,12 @@
 import express from "express";
-import { createFolder } from "../controllers/folderController.js";
+import {
+  createFolderValidation,
+  deleteFolder,
+} from "../controllers/folderController.js";
 
 const folderRouter = express.Router();
 
-folderRouter.post("/createfolder", createFolder);
+folderRouter.post("/createfolder", createFolderValidation);
+folderRouter.delete("/folders/:id", deleteFolder);
 
 export { folderRouter };

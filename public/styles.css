@@ -92,32 +92,31 @@ button[disabled]:hover {
   gap: 1rem;
 }
 
-.add-new-post-form {
-  display: flex;
-  flex-direction: column;
-  max-width: 360px;
-}
-
-.messages-list {
+.folders-wrapper {
   padding: 0;
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5em;
 }
 
-.messages-list li {
-  list-style: none;
-  margin-bottom: 0.5em;
-  border: 2px solid #686b8b;
-  border-radius: 8px;
-  padding: 1em;
+.single-folder-item {
+  border: 2px solid #414361;
+  padding: 0.5em;
 }
 
-.message {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.message h2 {
+.single-folder-item * {
   margin: 0;
+}
+
+.single-folder-item > h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25em;
+}
+
+.single-folder-item > p {
+  margin-bottom: 1em;
 }
 
 .admin-msg-wrap {
