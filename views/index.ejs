@@ -53,6 +53,7 @@
     const editFolderDialog = document.querySelector("#editFolderDialog");
     const editButtons = document.querySelectorAll(".edit-folder-btn");
     const folderNameInput = document.querySelector("#foldername"); // Selector for input in dialog
+    const folderIdInput = document.querySelector("#folderId"); // // Hidden input for folder ID
 
     const closeEditFolderDialogBtn = document.querySelector(
       "#closeEditFolderBtn"
@@ -71,6 +72,9 @@
 
         // Set the folder name in the modal's input field
         folderNameInput.value = folderName;
+
+        // Set the folder ID in the hidden input field
+        folderIdInput.value = folderId;
 
         editFolderDialog.showModal();
       });

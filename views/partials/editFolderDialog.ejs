@@ -3,6 +3,7 @@
 
   <% if (currentUser) { %>
   <form action="editfolder" method="post">
+    <input type="hidden" name="folderId" id="folderId" />
     <label for="foldername">Name:</label>
     <input type="text" name="foldername" id="foldername" required />
     <button type="submit">Rename</button>

@@ -1,6 +1,10 @@
 import { validateFolderName } from "./validations.js";
 import { validationResult } from "express-validator";
-import { createFolder, deleteFolderById } from "../db/folderQueries.js";
+import {
+  createFolder,
+  deleteFolderById,
+  renameFolderById,
+} from "../db/folderQueries.js";
 
 // @desc Create folder
 // @route POST /createfolder
@@ -44,4 +48,32 @@ const deleteFolder = async (req, res, next) => {
   }
 };
 
-export { createFolderValidation, deleteFolder };
+// @desc Edit (rename) folder
+// @route POST /editfolder
+const renameFolder = [
+  validateFolderName,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("error", {
+        title: "Error with folder rename",
+        message: "Error with folder rename",
+        status: 400,
+        errors: errors.array(),
+      });
+    }
+    console.log(req.body);
+    const folderId = parseInt(req.body.folderId);
+    const folderName = req.body.foldername;
+    try {
+      const result = await renameFolderById(folderId, folderName);
+      console.log(result);
+      return res.redirect("/");
+    } catch (error) {
+      console.error("Error editing folder", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  },
+];
+
+export { createFolderValidation, deleteFolder, renameFolder };

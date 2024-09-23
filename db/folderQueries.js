@@ -41,6 +41,9 @@ const getAllFoldersByUserId = async (userId) => {
           id: userId,
         },
       },
+      orderBy: {
+        name: "asc",
+      },
     });
     return allFolders;
   } catch (error) {
@@ -61,4 +64,23 @@ const deleteFolderById = async (folderId) => {
   }
 };
 
-export { createFolder, getAllFoldersByUserId, deleteFolderById };
+const renameFolderById = async (folderId, newName) => {
+  try {
+    const renamedFolder = prisma.folder.update({
+      where: {
+        id: folderId,
+      },
+      data: {
+        name: newName,
+      },
+    });
+    return renamedFolder;
+  } catch (error) {}
+};
+
+export {
+  createFolder,
+  getAllFoldersByUserId,
+  deleteFolderById,
+  renameFolderById,
+};
