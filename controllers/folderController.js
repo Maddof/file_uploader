@@ -37,7 +37,6 @@ const createFolderValidation = [
 // @desc Delete folder via front-end fetch
 // @route DELETE /folders/:id
 const deleteFolder = async (req, res, next) => {
-  console.log(req.params);
   const folderId = parseInt(req.params.id);
   try {
     const result = await deleteFolderById(folderId);

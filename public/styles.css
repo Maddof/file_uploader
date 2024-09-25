@@ -154,3 +154,9 @@ button[disabled]:hover {
 .sign-up-form > button {
   margin-top: 1em;
 }
+
+.form-gen1 {
+  display: flex;
+  gap: 0.75em;
+  margin-bottom: 1em;
+}

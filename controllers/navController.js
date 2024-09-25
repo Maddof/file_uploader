@@ -1,4 +1,4 @@
-import { getAllFoldersByUserId } from "../db/folderQueries.js";
+import { getAllFoldersByUserId, getFolderById } from "../db/folderQueries.js";
 
 // const allFoldersByUserId = await nav.getAllFoldersByUserId(req.user.id);
 
@@ -68,6 +68,21 @@ const nav = {
       res.render("fileupload", {
         title: "File uploader",
         errors: null,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  },
+
+  // @desc Render single folder view
+  // @route GET /folder/:id
+  async renderSingleFolder(req, res, next) {
+    try {
+      const folderId = parseInt(req.params.id); // Extract folderId from URL
+      return res.render("singleFolder", {
+        title: "Single Folder",
+        errors: null,
+        folderId: folderId,
       });
     } catch (err) {
       return next(err);

@@ -78,9 +78,21 @@ const renameFolderById = async (folderId, newName) => {
   } catch (error) {}
 };
 
+const getFolderById = async (folderId) => {
+  try {
+    const folder = prisma.folder.findUnique({
+      where: { id: folderId },
+    });
+    return folder;
+  } catch (error) {
+    console.error("Error getting folder by id: ", error);
+  }
+};
+
 export {
   createFolder,
   getAllFoldersByUserId,
   deleteFolderById,
   renameFolderById,
+  getFolderById,
 };

@@ -2,13 +2,12 @@
   <h2>Create folder</h2>
 
   <% if (currentUser) { %>
-  <form action="createfolder" method="post">
+  <form action="createfolder" method="post" class="form-gen1">
     <label for="foldername">Name:</label>
     <input type="text" name="foldername" id="foldername" required />
     <button type="submit">Add folder</button>
   </form>
   <button autofocus id="closeCreateFolderBtn">Close</button>
-  <p>My modal!</p>
   <% } else { %>
   <p>Please login to create folders</p>
   <% } %> <%- include("errors.ejs") %>

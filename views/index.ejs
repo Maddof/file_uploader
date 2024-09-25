@@ -6,7 +6,7 @@
 <ul class="folders-wrapper">
   <% folders.forEach(folder => { %>
   <li class="single-folder-item" id="folder-<%= folder.id %>">
-    <h2><%= folder.name %></h2>
+    <a href="/folder/<%= folder.id %>"> <h2><%= folder.name %></h2></a>
     <p>Number of files: 2</p>
     <button value="<%= folder.id %>" class="del-folder-btn">DELETE</button>
     <button value="<%= folder.id %>" class="edit-folder-btn">EDIT</button>
