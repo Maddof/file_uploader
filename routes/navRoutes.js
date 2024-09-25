@@ -6,9 +6,6 @@ const navRouter = express.Router();
 navRouter.get("/", nav.renderIndex);
 navRouter.get("/sign-up", nav.renderSignUp);
 navRouter.get("/login", nav.renderLogin);
-navRouter.get("/fileupload", nav.renderFileUpload);
 navRouter.get("/folder/:id", nav.renderSingleFolder);
-
-navRouter.get("/dashboard", nav.renderDashboard);
 
 export { navRouter };

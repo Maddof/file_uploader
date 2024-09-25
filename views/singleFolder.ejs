@@ -1,6 +1,11 @@
 <h1>Single folder view</h1>
 
 <p>Current Folder ID: <%= folderId %></p>
+
+<% files.forEach(file => { %>
+<p>One file</p>
+<% }) %>
+
 <!-- Display the folder ID -->
 
 <%- include("fileupload.ejs") %>

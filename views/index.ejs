@@ -7,7 +7,7 @@
   <% folders.forEach(folder => { %>
   <li class="single-folder-item" id="folder-<%= folder.id %>">
     <a href="/folder/<%= folder.id %>"> <h2><%= folder.name %></h2></a>
-    <p>Number of files: 2</p>
+    <p>Number of files: <%= folder.files.length %></p>
     <button value="<%= folder.id %>" class="del-folder-btn">DELETE</button>
     <button value="<%= folder.id %>" class="edit-folder-btn">EDIT</button>
   </li>

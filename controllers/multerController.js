@@ -1,4 +1,6 @@
 import { cloudinary } from "../config/cloudinaryConfig.js";
+import { saveFile } from "../db/queries.js";
+import prisma from "../config/prismaClient.js";
 import fs from "fs";
 
 const uploadFile = async (req, res) => {
@@ -13,16 +15,19 @@ const uploadFile = async (req, res) => {
 
     const folderId = req.body.folderId;
 
-    console.log(req);
+    console.log(folderId);
 
     // Save file information in Prisma
     const newFile = await prisma.file.create({
       data: {
         name: req.file.originalname,
-        url: result.secure_url, // Cloudinary URL
+        url: "result.secure_url", // Cloudinary URL
         folderId: parseInt(folderId), // Associate with the correct folder
       },
     });
+
+    // Save file to db
+    await saveFile(newFile);
 
     /*
     // Upload file to Cloudinary
@@ -40,8 +45,9 @@ const uploadFile = async (req, res) => {
     });
 
     // If upload is successful, return the file URL
-    res.status(200).render("fileupload", {
+    res.status(200).render("singleFolder", {
       title: "File uploaded",
+      folderId: folderId,
       // url: result.secure_url, // Cloudinary file url
       errors: null,
     });
