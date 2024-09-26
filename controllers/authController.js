@@ -17,8 +17,6 @@ const validateSignUp = [
 
       const userExist = await getUserByUsername(req.body.username);
       // const userExist = await checkUniqueUser(req.body.username);
-      console.log(req.body.username);
-      console.log(userExist);
       if (userExist) {
         allErrors.push({ msg: "Username already exists" }); // Add the error for existing username
       }

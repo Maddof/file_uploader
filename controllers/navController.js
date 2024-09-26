@@ -13,7 +13,6 @@ const nav = {
       if (req.user) {
         allFoldersByUserId = await getAllFoldersByUserId(req.user.id);
       }
-      console.log(allFoldersByUserId);
       res.render("index", {
         title: "Home",
         errors: null,
@@ -56,7 +55,6 @@ const nav = {
       const folderId = parseInt(req.params.id); // Extract folderId from URL
       const allFiles = await file.getAllFilesInFolderByFolderId(folderId);
       const folder = await getFolderById(folderId);
-      console.log(allFiles);
       return res.render("singleFolder", {
         title: folder.name,
         errors: null,
