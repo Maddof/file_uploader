@@ -32,6 +32,8 @@ model File {
   id         Int      @id @default(autoincrement())
   name       String
   url        String
+  bytes      Int
+  public_id  String
   uploadedAt DateTime @default(now())
   folder     Folder   @relation(fields: [folderId], references: [id])
   folderId   Int

@@ -1,5 +1,5 @@
 import { cloudinary } from "../config/cloudinaryConfig.js";
-import { saveFile } from "../db/queries.js";
+import { file } from "../db/fileQueries.js";
 import prisma from "../config/prismaClient.js";
 import fs from "fs";
 
@@ -13,48 +13,49 @@ const uploadFile = async (req, res) => {
       });
     }
 
-    const folderId = req.body.folderId;
+    const folderId = parseInt(req.body.folderId);
 
-    console.log(folderId);
-
-    // Save file information in Prisma
-    const newFile = await prisma.file.create({
-      data: {
-        name: req.file.originalname,
-        url: "result.secure_url", // Cloudinary URL
-        folderId: parseInt(folderId), // Associate with the correct folder
-      },
-    });
-
-    // Save file to db
-    await saveFile(newFile);
-
-    /*
     // Upload file to Cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "my-folder-test", // Optional folder on Cloudinary
       use_filename: true, // Use the original filename
     });
 
-    
+    // Save file information in Prisma
+
+    const newFile = {
+      name: req.file.originalname,
+      url: result.secure_url,
+      bytes: result.bytes,
+      folderId: folderId,
+      public_id: result.public_id,
+    };
+
     console.log(result);
-    */
+
+    console.log(newFile);
+
+    // Save file to db
+    await file.saveFile(newFile);
+
     // Remove the file from local disk
     fs.unlink(req.file.path, (err) => {
       if (err) console.error("Failed to delete file:", err);
     });
 
     // If upload is successful, return the file URL
+    const allFiles = await file.getAllFilesInFolderByFolderId(folderId);
+
     res.status(200).render("singleFolder", {
       title: "File uploaded",
       folderId: folderId,
-      // url: result.secure_url, // Cloudinary file url
+      files: allFiles,
       errors: null,
     });
   } catch (error) {
     console.error("File upload Error:", error); // Log the error
 
-    return res.status(500).render("fileupload", {
+    return res.status(500).render("error", {
       title: "Error!",
       errors: [{ msg: "Error occured during file upload" }],
     });

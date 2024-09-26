@@ -1,3 +1,5 @@
+import { file } from "../db/fileQueries.js";
+
 // catch404 Middleware
 const catch404 = (req, res, next) => {
   res.status(404).render("error", {
@@ -10,25 +12,37 @@ const catch404 = (req, res, next) => {
 // Will catch errors from Multer and send them to the view and render where
 // partials/errors.ejs is included
 const fileUploadErrorHandler = (err, req, res, next) => {
+  const folderId = parseInt(
+    req.body.folderId || req.params.folderId || req.query.folderId
+  );
+
+  console.log(req);
+  console.log(req.params);
+
+  console.log("Folder id (error) was: " + folderId);
+  const allFiles = file.getAllFilesInFolderByFolderId(folderId);
   if (err.code === "LIMIT_FILE_SIZE") {
-    return res.render("fileupload", {
+    return res.render("error", {
       title: "Error",
+      folderId: folderId,
+      files: allFiles,
       errors: [{ msg: "File size exceeds limit" }],
+      message: "File exceeds limit",
+      status: 400,
     });
   }
 
   if (err.message === "Only images are allowed") {
-    return res.render("fileupload", {
+    return res.render("error", {
       title: "Error",
+      folderId: folderId,
+      files: allFiles,
       errors: [{ msg: err.message }],
+      message: "Only images allowed",
+      status: 400,
     });
   }
   next(err);
-  // For any other errors
-  // return res.render("fileupload", {
-  //   title: "Error",
-  //   errors: [{ msg: "An unexpected error occured" }],
-  // });
 };
 
 // Error handling middleware

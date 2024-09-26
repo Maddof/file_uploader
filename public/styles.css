@@ -160,3 +160,11 @@ button[disabled]:hover {
   gap: 0.75em;
   margin-bottom: 1em;
 }
+
+.file-table {
+  width: 100%;
+}
+
+.file-table th {
+  text-align: left;
+}

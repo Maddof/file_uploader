@@ -2,10 +2,66 @@
 
 <p>Current Folder ID: <%= folderId %></p>
 
-<% files.forEach(file => { %>
-<p>One file</p>
-<% }) %>
-
-<!-- Display the folder ID -->
-
+<table border="1" cellspacing="0" cellpadding="10" class="file-table">
+  <thead>
+    <tr>
+      <th>File Name</th>
+      <th>Date Uploaded</th>
+      <th>File Size</th>
+      <th>Actions</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% files.forEach(file => { %>
+    <tr id="file-<%= file.id %>">
+      <td><%= file.name %></td>
+      <td><%= new Date(file.uploadedAt).toLocaleString() %></td>
+      <td><%= (file.bytes / 1024).toFixed(2) %> KB</td>
+      <!-- Convert bytes to KB -->
+      <td>
+        <a href="<%= file.url %>" target="_blank">Download</a>
+      </td>
+      <td>
+        <button value="<%= file.id %>" class="del-file-btn">DELETE</button>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
 <%- include("fileupload.ejs") %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const deleteButtons = document.querySelectorAll(".del-file-btn");
+
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const fileId = button.value;
+
+        const confirmation = confirm(
+          "Are you sure you want to delete this file?"
+        );
+
+        if (confirmation) {
+          try {
+            const response = await fetch(`/file/${fileId}`, {
+              method: "DELETE",
+            });
+            if (response.ok) {
+              // Remove file from DOM
+              const currentItem = document.querySelector(`#file-${fileId}`);
+              currentItem.remove();
+            } else {
+              alert("Failed to delete file");
+            }
+          } catch (error) {
+            console.error("Error", error);
+            alert("Something went wrong");
+          }
+        }
+      });
+    });
+  });
+</script>

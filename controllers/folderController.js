@@ -61,12 +61,10 @@ const renameFolder = [
         errors: errors.array(),
       });
     }
-    console.log(req.body);
     const folderId = parseInt(req.body.folderId);
     const folderName = req.body.foldername;
     try {
       const result = await renameFolderById(folderId, folderName);
-      console.log(result);
       return res.redirect("/");
     } catch (error) {
       console.error("Error editing folder", error);
