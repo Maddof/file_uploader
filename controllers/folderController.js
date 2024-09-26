@@ -5,6 +5,9 @@ import {
   deleteFolderById,
   renameFolderById,
 } from "../db/folderQueries.js";
+import { cloudinary } from "../config/cloudinaryConfig.js";
+
+import { file } from "../db/fileQueries.js";
 
 // @desc Create folder
 // @route POST /createfolder
@@ -39,7 +42,19 @@ const createFolderValidation = [
 const deleteFolder = async (req, res, next) => {
   const folderId = parseInt(req.params.id);
   try {
-    const result = await deleteFolderById(folderId);
+    // Fetch all files in the folder
+    const filesInFolder = await file.getAllFilesInFolderByFolderId(folderId);
+    // Use Promise.all to await all deletion promises and delete all files in folder
+    await Promise.all(
+      filesInFolder.map(async (file) => {
+        await cloudinary.uploader.destroy(file.public_id, {
+          invalidate: true,
+        });
+      })
+    );
+
+    // Delete the folder from database
+    await deleteFolderById(folderId);
     return res.status(200).json({ message: "Folder deleted successfully" });
   } catch (error) {
     console.error("Error deleting folder", error);
