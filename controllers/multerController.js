@@ -16,7 +16,8 @@ const uploadFile = async (req, res) => {
     }
 
     const folderId = parseInt(req.body.folderId);
-
+    console.log("Folder id is(body): " + folderId);
+    console.log("Folder id is(params): " + req.params.folderId);
     // Upload file to Cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "my-folder-test", // Optional folder on Cloudinary
