@@ -1,15 +1,17 @@
 import { cloudinary } from "../config/cloudinaryConfig.js";
 import { file } from "../db/fileQueries.js";
-import prisma from "../config/prismaClient.js";
+import { getFolderById } from "../db/folderQueries.js";
 import fs from "fs";
 
 const uploadFile = async (req, res) => {
   try {
     // File is stored in req.file
     if (!req.file || !req.body.folderId) {
-      return res.status(400).render("fileupload", {
+      return res.status(400).render("error", {
         title: "File upload error",
         errors: [{ msg: "No file uploaded or folder Id missing" }],
+        message: "No file uplaoded or folder id missing",
+        status: 400,
       });
     }
 
@@ -21,7 +23,7 @@ const uploadFile = async (req, res) => {
       use_filename: true, // Use the original filename
     });
 
-    // Save file information in Prisma
+    // Save file information in DB
 
     const newFile = {
       name: req.file.originalname,
@@ -31,11 +33,6 @@ const uploadFile = async (req, res) => {
       public_id: result.public_id,
     };
 
-    console.log(result);
-
-    console.log(newFile);
-
-    // Save file to db
     await file.saveFile(newFile);
 
     // Remove the file from local disk
@@ -43,11 +40,11 @@ const uploadFile = async (req, res) => {
       if (err) console.error("Failed to delete file:", err);
     });
 
-    // If upload is successful, return the file URL
     const allFiles = await file.getAllFilesInFolderByFolderId(folderId);
+    const folder = await getFolderById(folderId);
 
     res.status(200).render("singleFolder", {
-      title: "File uploaded",
+      title: folder.name,
       folderId: folderId,
       files: allFiles,
       errors: null,
@@ -58,6 +55,8 @@ const uploadFile = async (req, res) => {
     return res.status(500).render("error", {
       title: "Error!",
       errors: [{ msg: "Error occured during file upload" }],
+      message: "Error occured during file upload",
+      status: 500,
     });
   }
 };

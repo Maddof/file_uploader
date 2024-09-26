@@ -67,7 +67,7 @@ const validateLogin = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.redirect("/dashboard"); // On successful login, redirect to the dashbaord
+      return res.redirect("/"); // On successful login, redirect to the index page (home)
     });
   })(req, res, next);
 };

@@ -1,4 +1,4 @@
-import { getAllFoldersByUserId } from "../db/folderQueries.js";
+import { getAllFoldersByUserId, getFolderById } from "../db/folderQueries.js";
 import { file } from "../db/fileQueries.js";
 
 // const allFoldersByUserId = await nav.getAllFoldersByUserId(req.user.id);
@@ -55,9 +55,10 @@ const nav = {
     try {
       const folderId = parseInt(req.params.id); // Extract folderId from URL
       const allFiles = await file.getAllFilesInFolderByFolderId(folderId);
+      const folder = await getFolderById(folderId);
       console.log(allFiles);
       return res.render("singleFolder", {
-        title: "Single Folder",
+        title: folder.name,
         errors: null,
         folderId: folderId,
         files: allFiles,

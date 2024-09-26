@@ -1,6 +1,6 @@
 <h1>Files and folders</h1>
 
-<% if (folders) { %> <% if (folders.length <= 0) { %>
+<% if (folders && currentUser) { %> <% if (folders.length <= 0) { %>
 <p>Looks like you havent created or uploaded any files yet</p>
 <% } %>
 <ul class="folders-wrapper">
@@ -16,7 +16,7 @@
 </ul>
 <%- include('partials/editFolderDialog'); -%> <% } else { %>
 <p>Please login or create an account to publish folders and upload files.</p>
-<% } %>
+<% } %> <% if (currentUser) { %>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -81,3 +81,4 @@
     });
   });
 </script>
+<% } %>

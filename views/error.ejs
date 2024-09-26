@@ -5,4 +5,15 @@
 <p>Status: <%= status %></p>
 <% } %> <%- include("partials/errors") %>
 
-<a href="/">Back to Home</a>
+<!-- Link back to the last visited page or home page if not available -->
+<a href="javascript:void(0);" onclick="goBack()">Back to Previous Page</a>
+
+<script>
+  function goBack() {
+    if (document.referrer) {
+      window.location.href = document.referrer;
+    } else {
+      window.location.href = "/"; // Fallback to home page
+    }
+  }
+</script>
