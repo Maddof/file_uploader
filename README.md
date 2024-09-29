@@ -2,7 +2,8 @@
 
 Student project. A simple file storage system built with Express.js and EJS. Users can register to sign up and log in. Manager their files and folders. PostgreSQL (Prisma) for data storage and integrated with Cloudinary for storing files in the "CLOUD".
 
-Link to deployment:
+Link to deployment: https://fileuploader-production-f89c.up.railway.app/
+Demo account: demo / demo
 
 ## Features
 
